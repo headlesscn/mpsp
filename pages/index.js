@@ -1,43 +1,31 @@
 import Container from '@/components/container'
-import MoreStories from '@/components/more-stories'
-import HeroPost from '@/components/hero-post'
 import Intro from '@/components/intro'
 import Layout from '@/components/layout'
-import { getAllPostsForHome } from '@/lib/api'
+import AllSps from '@/components/all-sps'
+import { getAllSpsForHome } from '@/lib/api'
 import Head from 'next/head'
 import { CMS_NAME } from '@/lib/constants'
 
-export default function Index({ allPosts, preview }) {
-  const heroPost = allPosts[0]
-  const morePosts = allPosts.slice(1)
+export default function Index({ allSps }) {
   return (
     <>
-      <Layout preview={preview}>
+      <Layout>
         <Head>
-          <title>Next.js Blog Example with {CMS_NAME}</title>
+          <title>SP Manager By {CMS_NAME}</title>
         </Head>
         <Container>
           <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          {allSps.length > 0 
+          && <AllSps sps={allSps} />}
         </Container>
       </Layout>
     </>
   )
 }
 
-export async function getStaticProps({ preview = null }) {
-  const allPosts = (await getAllPostsForHome(preview)) || []
+export async function getStaticProps() {
+  const allSps = (await getAllSpsForHome()) || []
   return {
-    props: { allPosts, preview },
+    props: { allSps },
   }
 }
